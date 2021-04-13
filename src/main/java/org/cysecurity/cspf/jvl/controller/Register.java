@@ -5,7 +5,7 @@
  */
 
 package org.cysecurity.cspf.jvl.controller;
-
+import java.sql.PreparedStatement;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.cysecurity.cspf.jvl.model.DBConnect;
 
-/**
+/***
  *
  * @author breakthesec
  */
@@ -37,7 +37,7 @@ public class Register extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       try {
+        try {
             PrintWriter out = response.getWriter();
             Connection con=new DBConnect().connect(getServletContext().getRealPath("/WEB-INF/config.properties"));
             String user=request.getParameter("username");
@@ -45,39 +45,56 @@ public class Register extends HttpServlet {
             String email=request.getParameter("email");
             String about=request.getParameter("About");
             String secret=request.getParameter("secret");
-          if(secret==null || secret.equals(""))
-          {
-              secret="nosecret";
-          }
+            if(secret==null || secret.equals(""))
+            {
+                secret="nosecret";
+            }
             try
-             {
-                    if(con!=null && !con.isClosed())
-                               {
-                                  
-                                   Statement stmt = con.createStatement();  
-                                  stmt.executeUpdate("INSERT into users(username, password, email, About,avatar,privilege,secretquestion,secret) values ('"+user+"','"+pass+"','"+email+"','"+about+"','default.jpg','user',1,'"+secret+"')");
-                                       stmt.executeUpdate("INSERT into UserMessages(recipient, sender, subject, msg) values ('"+user+"','admin','Hi','Hi<br/> This is admin of this page. <br/> Welcome to Our Forum')");
-             
-                                    response.sendRedirect("index.jsp");
-                                    
-                               }
-                    else
-                    {
-                         response.sendRedirect("Register.jsp");
-                    }
-                }
-               catch(SQLException ex)
+            {
+                if(con!=null && !con.isClosed())
                 {
-                          System.out.println("SQLException: " + ex.getMessage());
-                         System.out.println("SQLState: " + ex.getSQLState());
-                         System.out.println("VendorError: " + ex.getErrorCode());
-                           
-                       }
-        
-          }
+
+                    //Statement stmt = con.createStatement();
+                    //stmt.executeUpdate("INSERT into users(username, password, email, About,avatar,privilege,secretquestion,secret) values ('"+user+"','"+pass+"','"+email+"','"+about+"','default.jpg','user',1,'"+secret+"')");
+                    String query = "INSERT into users(" +" username," + " password," + "email," + "About," + "avatar," + "privilege," + "secretquestion," + "secret) values (" + "?,?,?,?,?,?,?,?)";
+                    PreparedStatement stmt = con.prepareStatement(query);
+                    stmt.setString(1, user);
+                    stmt.setString(2, pass);
+                    stmt.setString(3, email);
+                    stmt.setString(4, about);
+                    stmt.setString(8, secret);
+
+// execute the preparedstatement insert
+
+                    stmt.executeUpdate();
+
+                    String sql = "INSERT into UserMessages(recipient, sender, subject, msg) values ("+ "?,'admin','Hi','Hi<br/> This is admin of this page. <br/> Welcome to Our Forum')";
+                    PreparedStatement st = con.prepareStatement(sql);
+                    //Statement st = con.prepareStatement();
+                    st.setString(1, user);
+                    st.executeUpdate();
+                    //st.executeUpdate("INSERT into UserMessages(recipient, sender, subject, msg) values ('"+user+"','admin','Hi','Hi<br/> This is admin of this page. <br/> Welcome to Our Forum')");
+
+                    response.sendRedirect("index.jsp");
+
+                }
+                else
+                {
+                    response.sendRedirect("Register.jsp");
+                }
+            }
+            catch(SQLException ex)
+            {
+                System.out.println("SQLException: " + ex.getMessage());
+                System.out.println("SQLState: " + ex.getSQLState());
+                System.out.println("VendorError: " + ex.getErrorCode());
+
+            }
+
+        }
         catch(Exception e)
         {
-            
+
         }
     }
 
