@@ -77,3 +77,4 @@ Rescan SCA and SAST after changed status Resolved in Jira
 New Rescan
 NewScan2 after jira webhook updated
 NewScan2 after commented filter status Confirmed
+SCA scan
