@@ -79,3 +79,4 @@ NewScan2 after jira webhook updated
 NewScan2 after commented filter status Confirmed
 SCA scan
 SCA scan after fix
+Scan
