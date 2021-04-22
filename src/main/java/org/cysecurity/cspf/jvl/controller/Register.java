@@ -5,7 +5,7 @@
  */
 
 package org.cysecurity.cspf.jvl.controller;
-import java.sql.PreparedStatement;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -54,26 +54,9 @@ public class Register extends HttpServlet {
                 if(con!=null && !con.isClosed())
                 {
 
-                    //Statement stmt = con.createStatement();
-                    //stmt.executeUpdate("INSERT into users(username, password, email, About,avatar,privilege,secretquestion,secret) values ('"+user+"','"+pass+"','"+email+"','"+about+"','default.jpg','user',1,'"+secret+"')");
-                    String query = "INSERT into users(" +" username," + " password," + "email," + "About," + "avatar," + "privilege," + "secretquestion," + "secret) values (" + "?,?,?,?,?,?,?,?)";
-                    PreparedStatement stmt = con.prepareStatement(query);
-                    stmt.setString(1, user);
-                    stmt.setString(2, pass);
-                    stmt.setString(3, email);
-                    stmt.setString(4, about);
-                    stmt.setString(8, secret);
-
-// execute the preparedstatement insert
-
-                    stmt.executeUpdate();
-
-                    String sql = "INSERT into UserMessages(recipient, sender, subject, msg) values ("+ "?,'admin','Hi','Hi<br/> This is admin of this page. <br/> Welcome to Our Forum')";
-                    PreparedStatement st = con.prepareStatement(sql);
-                    //Statement st = con.prepareStatement();
-                    st.setString(1, user);
-                    st.executeUpdate();
-                    //st.executeUpdate("INSERT into UserMessages(recipient, sender, subject, msg) values ('"+user+"','admin','Hi','Hi<br/> This is admin of this page. <br/> Welcome to Our Forum')");
+                    Statement stmt = con.createStatement();
+                    stmt.executeUpdate("INSERT into users(username, password, email, About,avatar,privilege,secretquestion,secret) values ('"+user+"','"+pass+"','"+email+"','"+about+"','default.jpg','user',1,'"+secret+"')");
+                    stmt.executeUpdate("INSERT into UserMessages(recipient, sender, subject, msg) values ('"+user+"','admin','Hi','Hi<br/> This is admin of this page. <br/> Welcome to Our Forum')");
 
                     response.sendRedirect("index.jsp");
 
@@ -97,3 +80,44 @@ public class Register extends HttpServlet {
 
         }
     }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}
