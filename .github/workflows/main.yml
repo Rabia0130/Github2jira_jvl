@@ -51,8 +51,8 @@ jobs:
           # GitHub API Token (note: you don't have to create secrets.GITHUB_TOKEN, it is created automatically and will not appear in your repo's custom secrets)
           github_token: ${{secrets.GITHUB_TOKEN}}
           #SCA parameters
-          sca_api_url: https://eu.api.scacheckmarx.com
-          sca_app_url: https://eu.sca.scacheckmarx.com
+          sca_api_url: https://eu.api-sca.checkmarx.net
+          sca_app_url: https://eu.sca.checkmarx.net
           sca_access_control_url: https://eu.platform.checkmarx.net
           sca_tenant: SCA_Rabia_Khanfir  # <-- Insert Checkmarx CxSCA Tenant
           sca_username: ${{ secrets.CHECKMARX_SCA_USERNAME }} # To be stored in GitHub Secrets.
