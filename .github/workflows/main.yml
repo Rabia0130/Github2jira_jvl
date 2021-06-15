@@ -31,7 +31,7 @@ jobs:
           # Provide Checkmarx URL
           checkmarx_url: ${{secrets.CHECKMARX_URL}}
           # Provide team
-          team: /CxServer/SP/EMEA/UK
+          team: /CxServer/SP/EMEA/checkmarx.com - 41
           # Provide Checkmarx Username
           checkmarx_username: ${{secrets.CHECKMARX_USERNAME}}
           # Provide Checkmarx Password
@@ -39,9 +39,9 @@ jobs:
           # Provide Checkmarx Client Secret
           checkmarx_client_secret: ${{secrets.CHECKMARX_CLIENT_SECRET}}
           # Select a Checkmarx Project
-          project: DSVW-GitHub-action
+          project: github2jira_jvl-GitHub-action
           # Select an Application Name used by downstream bug tracker systems
-          app: DSVW
+          app: github2jira_jvl
           # Select a Checkmarx Preset
           #preset: # optional, default is Checkmarx Default
           # Break build based on Checkmarx findings?
