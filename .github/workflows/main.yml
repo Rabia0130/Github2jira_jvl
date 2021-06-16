@@ -5,9 +5,9 @@ name: CxFlow
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ Security-Fix ]
   pull_request:
-    branches: [ master ]
+    branches: [ Security-Fix ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -59,4 +59,4 @@ jobs:
           sca_password: ${{ secrets.CHECKMARX_SCA_PASSWORD }} # To be stored in GitHub Secrets.
           break_build: false
           # extra parameters
-          params: --bug-tracker=jira --config=cx.config --repo-name=github2jira_jvl --namespace=Rabia0130 --branch=master --jira.url=${{secrets.JIRA_URL}} --jira.username=${{secrets.JIRA_USER}} --jira.token=${{secrets.JIRA_TOKEN}}
+          params: --filter-severity=High --filter-category=SQL_Injection --bug-tracker=jira --config=cx.config --repo-name=github2jira_jvl --namespace=Rabia0130 --branch=Security-Fix --jira.url=${{secrets.JIRA_URL}} --jira.username=${{secrets.JIRA_USER}} --jira.token=${{secrets.JIRA_TOKEN}}
