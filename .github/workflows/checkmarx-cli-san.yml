@@ -1,0 +1,59 @@
+# This is a basic workflow to help you get started with Actions
+name: CxFlow
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  checkmarx-cli-san:
+    # The type of runner that the job will run on
+    runs-on: self-hosted
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Download CxCLI Zip
+      run: wget -O ~/cxcli.zip https://download.checkmarx.com/8.9.0/Plugins/CxConsolePlugin-8.90.0.zip
+    - name: Unzip CxCLI Zip
+      run: unzip ~/cxcli.zip -d ~/cxcli
+    - name: Make CxCLI executable
+      run: chmod +x ~/cxcli/runCxConsole.sh
+       
+    - uses: actions/checkout@v1
+    - name: Run Checkmarx Scan
+      run: |
+        export CX_PROJECT_NAME=$(basename "$GITHUB_REPOSITORY")
+        export BRANCH=$(basename "$GITHUB_REF")
+        ~/cxcli/runCxConsole.sh Scan -CxServer $CX_SERVER -CxUser $CX_USER -CxPassword $CX_PASSWORD -ProjectName "$CX_TEAM\\$CX_PROJECT_NAME-$BRANCH" -preset "$CX_PRESET" -LocationType folder -LocationPath $GITHUB_WORKSPACE -SASTHigh $CX_HIGH -SASTMedium $CX_MEDIUM -SASTLow $CX_LOW -ReportXML $GITHUB_WORKSPACE/results.xml -ReportPDF $GITHUB_WORKSPACE/results.pdf -Comment "git $BRANCH@$GITHUB_SHA" -verbose
+      env:
+        # Provide Checkmarx URL
+        CX_SERVER: ${{secrets.CHECKMARX_URL}}
+        # Provide team
+        CX_TEAM: /CxServer
+        # Provide Checkmarx Username
+        CX_USER: ${{secrets.CHECKMARX_USERNAME}}
+        # Provide Checkmarx Password
+        CX_PASSWORD: ${{secrets.CHECKMARX_PASSWORD}}
+        # Provide Checkmarx Client Secret
+        # checkmarx_client_secret: ${{secrets.CHECKMARX_CLIENT_SECRET}}
+        # Select a Checkmarx Preset
+        CX_PRESET: Checkmarx Default
+        CX_HIGH: 0
+        CX_MEDIUM: 0
+        CX_LOW: 0
+    - name: Upload PDF Artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: results.pdf
+        path: results.pdf
+    - name: Upload XML Artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: results.xml
+        path: results.xml
