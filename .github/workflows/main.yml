@@ -60,6 +60,8 @@ jobs:
           sca_username: ${{ secrets.CHECKMARX_SCA_USERNAME }} # To be stored in GitHub Secrets.
           sca_password: ${{ secrets.CHECKMARX_SCA_PASSWORD }} # To be stored in GitHub Secrets.
           break_build: false
+          filterseverity: "High"
+          filterstatus: "To Verify"
           # extra parameters
           params: --bug-tracker=jira --config=cx.config --repo-name=github2jira_jvl --namespace=Rabia0130 --branch=master --jira.url=${{secrets.JIRA_URL}} --jira.username=${{secrets.JIRA_USER}} --jira.token=${{secrets.JIRA_TOKEN}} --http-read-timeout=600000
           #params: --repo-name=github2jira_jvl --namespace=Rabia0130 --branch=master --https-read-timeout=600000
