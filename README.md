@@ -24,3 +24,4 @@
 RIAEvangelist was responsible for a Hacktivism act against the Russian/Ukraine War introducing a "Peacenotwar" package in NPM - node-ipc_9.2.2. They also maintain 40+ other Open Source projects like event-pubsub (not malicious)
 * https://checkmarx.com/blog/protestware-politics-and-open-source-software/
 
+test scan
